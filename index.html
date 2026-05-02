@@ -3,214 +3,175 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>FRENDX HUB | МАГАЗИН</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;600;800&display=swap" rel="stylesheet">
-    <script src="https://www.paypal.com/sdk/js?client-id=YOUR_CLIENT_ID&currency=USD"></script>
+    <title>Win Tim Store</title>
+    <!-- Подключаем скрипт Telegram Web App -->
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
     <style>
         :root {
-            --accent: #ff2d2d;
-            --bg-dark: #0d0d0d;
-            --card-bg: #141414;
+            --bg-color: #0f0f13;
+            --card-bg: #1a1a24;
+            --accent-color: #ffaa00;
             --text-main: #ffffff;
-            --text-dim: #a5a5a5;
+            --text-dim: #a0a0a0;
         }
 
         body {
-            background-color: var(--bg-dark);
+            background-color: var(--bg-color);
             color: var(--text-main);
-            font-family: 'Montserrat', sans-serif;
+            font-family: 'Segoe UI', Roboto, sans-serif;
             margin: 0;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
         }
 
-        header {
-            padding: 50px 20px;
+        .header {
             text-align: center;
-            background: radial-gradient(circle at top, rgba(255, 45, 45, 0.15) 0%, transparent 70%);
+            margin-bottom: 30px;
         }
 
-        .logo { font-size: 3rem; font-weight: 800; text-transform: uppercase; letter-spacing: 4px; margin: 0; }
-        .logo span { color: var(--accent); }
+        .header h1 {
+            color: var(--accent-color);
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            margin-bottom: 5px;
+        }
 
-        .container { max-width: 1200px; margin: 0 auto; padding: 40px 20px; }
+        .nick-input {
+            background: var(--card-bg);
+            border: 2px solid #333;
+            border-radius: 8px;
+            padding: 12px;
+            color: white;
+            width: 100%;
+            max-width: 300px;
+            margin-bottom: 25px;
+            outline: none;
+            text-align: center;
+        }
 
-        .shop-grid {
+        .nick-input:focus {
+            border-color: var(--accent-color);
+        }
+
+        .shop-container {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 25px;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 400px;
         }
 
         .product-card {
             background: var(--card-bg);
-            border-radius: 16px;
-            padding: 30px;
-            border: 1px solid #222;
-            transition: 0.3s;
+            border-left: 4px solid var(--accent-color);
+            border-radius: 10px;
+            padding: 15px;
             display: flex;
-            flex-direction: column;
-            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            transition: transform 0.2s;
         }
 
-        .product-card:hover {
-            border-color: var(--accent);
-            transform: translateY(-5px);
-            box-shadow: 0 10px 30px rgba(255, 45, 45, 0.15);
+        .product-card:active {
+            transform: scale(0.98);
         }
 
-        .category-label {
-            font-size: 0.7rem;
-            font-weight: 800;
-            color: var(--accent);
-            text-transform: uppercase;
-            margin-bottom: 10px;
-            letter-spacing: 1px;
-        }
-
-        .product-title { font-size: 1.4rem; font-weight: 800; margin-bottom: 10px; text-transform: uppercase; }
-        .product-desc { color: var(--text-dim); font-size: 0.85rem; margin-bottom: 25px; min-height: 45px; }
-
-        .price-box { border-top: 1px solid #222; padding-top: 20px; margin-top: auto; }
-        .current-price { font-size: 1.6rem; font-weight: 800; color: var(--accent); display: block; margin-bottom: 15px; }
+        .info h3 { margin: 0; font-size: 18px; }
+        .info p { margin: 5px 0 0; color: var(--text-dim); font-size: 13px; }
 
         .buy-btn {
-            background: var(--accent); color: white; border: none;
-            width: 100%; padding: 15px; border-radius: 10px;
-            font-weight: 800; text-transform: uppercase; cursor: pointer; transition: 0.2s;
+            background: var(--accent-color);
+            border: none;
+            border-radius: 5px;
+            color: black;
+            padding: 10px 15px;
+            font-weight: bold;
+            cursor: pointer;
         }
 
-        .modal {
-            display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.95); z-index: 1000; justify-content: center; align-items: center;
+        .barter-btn {
+            background: #55ff55;
+            color: black;
         }
 
-        .modal-content {
-            background: var(--card-bg); padding: 40px; border-radius: 20px;
-            width: 90%; max-width: 450px; border: 1px solid #333; text-align: center;
-        }
-
-        input {
-            width: 100%; padding: 15px; background: #1a1a1a;
-            border: 1px solid #333; border-radius: 10px; color: white;
-            font-family: inherit; margin-bottom: 20px; box-sizing: border-box;
-        }
+        /* Музыкальный плеер (скрытый) */
+        #bg-music { display: none; }
     </style>
 </head>
 <body>
 
-<header>
-    <h1 class="logo">FRENDX<span>.HUB</span></h1>
-</header>
+    <!-- Фоновая музыка -->
+    <audio id="bg-music" autoplay loop>
+        <source src="musick.mp3" type="audio/mpeg">
+    </audio>
 
-<div class="container">
-    <div class="shop-grid">
-        <!-- Custom CFG -->
+    <div class="header">
+        <h1>Win Tim Store</h1>
+        <p style="color: var(--text-dim);">Лучшие товары для вашего гриферства</p>
+    </div>
+
+    <input type="text" id="nick" class="nick-input" placeholder="Введите ваш никнейм..." required>
+
+    <div class="shop-container">
+        <!-- Товар 1 -->
         <div class="product-card">
-            <div class="category-label">Settings</div>
-            <div class="product-title">Custom CFG</div>
-            <div class="product-desc">Индивидуальная настройка под ваш девайс.</div>
-            <div class="price-box">
-                <span class="current-price">100 ГРН.</span>
-                <button class="buy-btn" onclick="openModal('Custom CFG', '2.50')">КУПИТЬ</button>
+            <div class="info">
+                <h3>Custom CFG</h3>
+                <p>Идеальные настройки для PVP</p>
             </div>
+            <button class="buy-btn" onclick="sendToBot('Custom CFG', 100, 'UAH')">100 грн</button>
         </div>
 
-        <!-- PVP V1 -->
-        <div class="product-card">
-            <div class="category-label">PVP Pack</div>
-            <div class="product-title">PVP-V1</div>
-            <div class="product-desc">Стандартный нагиб-пакет для 1.16.5.</div>
-            <div class="price-box">
-                <span class="current-price">200 ГРН.</span>
-                <button class="buy-btn" onclick="openModal('PVP-V1', '5.00')">КУПИТЬ</button>
+        <!-- Товар 2 -->
+        <div class="product-card" style="border-left-color: #00aaff;">
+            <div class="info">
+                <h3>Enough Visuals</h3>
+                <p>Лучшие частицы и анимации</p>
             </div>
+            <button class="buy-btn" style="background: #00aaff;" onclick="sendToBot('Enough Visuals', 150, 'UAH')">150 грн</button>
         </div>
 
-        <!-- PVP V2 -->
-        <div class="product-card" style="border-color: #555;">
-            <div class="category-label">Lite</div>
-            <div class="product-title">PVP-V2</div>
-            <div class="product-desc">Базовые настройки для стабильной игры.</div>
-            <div class="price-box">
-                <span class="current-price">25 ГРН.</span>
-                <button class="buy-btn" onclick="openModal('PVP-V2', '0.70')">КУПИТЬ</button>
+        <!-- Оплата валютой FunTime / ReallyWorld -->
+        <div class="product-card" style="border-left-color: #55ff55;">
+            <div class="info">
+                <h3>Оплата Ресурсами</h3>
+                <p>Валюта FunTime / RW</p>
             </div>
-        </div>
-
-        <!-- Enough Visual -->
-        <div class="product-card">
-            <div class="category-label">Visuals</div>
-            <div class="product-title">Enough Visual</div>
-            <div class="product-desc">Мягкие тени, блюр и современный UI.</div>
-            <div class="price-box">
-                <span class="current-price">400 ГРН.</span>
-                <button class="buy-btn" onclick="openModal('Enough Visual', '10.00')">КУПИТЬ</button>
-            </div>
-        </div>
-
-        <!-- VIP -->
-        <div class="product-card">
-            <div class="category-label">Ranks</div>
-            <div class="product-title">VIP Статус</div>
-            <div class="product-desc">Базовые привилегии на сервере.</div>
-            <div class="price-box">
-                <span class="current-price">10 ГРН.</span>
-                <button class="buy-btn" onclick="openModal('VIP Status', '0.30')">КУПИТЬ</button>
-            </div>
-        </div>
-
-        <!-- Ultra VIP -->
-        <div class="product-card" style="border-color: var(--accent);">
-            <div class="category-label">Premium Ranks</div>
-            <div class="product-title">Ultra VIP</div>
-            <div class="product-desc">Максимальные возможности и уникальная роль.</div>
-            <div class="price-box">
-                <span class="current-price">20 ГРН.</span>
-                <button class="buy-btn" onclick="openModal('Ultra VIP', '0.55')">КУПИТЬ</button>
-            </div>
+            <button class="buy-btn barter-btn" onclick="sendToBot('Barter', 0, 'GAME')">ВЫБРАТЬ</button>
         </div>
     </div>
-</div>
 
-<div id="payModal" class="modal">
-    <div class="modal-content">
-        <h2 id="itemName" style="text-transform: uppercase;"></h2>
-        <input type="text" id="nick" placeholder="Ваш никнейм...">
-        <div id="paypal-button-container"></div>
-        <p onclick="closeModal()" style="cursor:pointer; color:#555; margin-top:20px;">Отмена</p>
-    </div>
-</div>
+    <script>
+        const tg = window.Telegram.WebApp;
+        tg.expand(); // Разворачиваем окно
 
-<script>
-    let currentPrice = "0.00";
-    let currentItem = "";
+        // Попытка включить музыку (некоторые браузеры блокируют автоплей без клика)
+        document.body.addEventListener('click', () => {
+            const audio = document.getElementById('bg-music');
+            if (audio.paused) audio.play();
+        }, { once: true });
 
-    function openModal(item, price) {
-        currentItem = item; currentPrice = price;
-        document.getElementById('itemName').innerText = item;
-        document.getElementById('payModal').style.display = 'flex';
-        document.getElementById('paypal-button-container').innerHTML = '';
-        renderBtn();
-    }
+        function sendToBot(itemName, price, currency) {
+            const nickname = document.getElementById('nick').value;
 
-    function closeModal() { document.getElementById('payModal').style.display = 'none'; }
-
-    function renderBtn() {
-        paypal.Buttons({
-            createOrder: (data, actions) => {
-                return actions.order.create({
-                    purchase_units: [{
-                        description: currentItem + " for " + document.getElementById('nick').value,
-                        amount: { value: currentPrice }
-                    }]
-                });
-            },
-            onApprove: (data, actions) => {
-                return actions.order.capture().then(details => {
-                    alert('Оплата прошла! Ник: ' + document.getElementById('nick').value);
-                    closeModal();
-                });
+            if (!nickname || nickname.length < 3) {
+                tg.showAlert("⚠️ Пожалуйста, введите корректный никнейм!");
+                return;
             }
-        }).render('#paypal-button-container');
-    }
-</script>
+
+            // Формируем данные для отправки в бот
+            const orderData = {
+                item: itemName,
+                amount: price,
+                curr: currency,
+                player: nickname
+            };
+
+            // Отправляем данные и закрываем WebApp
+            tg.sendData(JSON.stringify(orderData));
+        }
+    </script>
 </body>
 </html>
